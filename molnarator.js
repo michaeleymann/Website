@@ -77,8 +77,8 @@ let cells = 7; //NEEDS TO BE UNEVEN
 let gap = 3;
 let values = [4,6,8,10,12,14];
 let path = [];
-let rF = 0.9;
-let rFplus = 0.0;
+let rF = 0.3;
+let rFplus = 0.05;
 //MAKE PATH
 
 for (let col = 0; col < cells; col++) {
