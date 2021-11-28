@@ -3,7 +3,7 @@
 
 <head>
 
-    <title>Squares, press CMD-R to reload</title>
+    <title>Battlemap, press CMD-R to reload</title>
 
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
@@ -14,19 +14,32 @@
             padding: 0;
             width: 100%;
             height: 100%;
-            font-size: 0;
-            font-family: sans-serif;
+            font-size: 7px;
+            font-family: monospace;
             color: #000;
             background-color: #fff;
             user-select: none;
+           
         }
 
+        #title{
+            position: fixed;
+            top: 10px;
+            left: 10px;
+        }
+        #values{
+            position: fixed;
+            bottom: 20px;
+            left: 10px;
+        }
         stage,
         svg,
         path {
             position: fixed;
             overflow: visible;
+            mix-blend-mode: multiply;
         }
+
         #header{
             font-size:12px;
             position: absolute;
@@ -43,13 +56,14 @@
 
 <body>
     <div id="header">
-        <a href="/Battlemap/battlemap.html">battlemap</a><br>
-        <a href="/Dreiecke/dreiecke.html">triangles</a><br>
-        <b>squares</b><br>
-        <a href="/Molnarator/molnarator.html">molnarator</a>
+        <b>battlemap</b><br>
+        <a href="dreiecke.html">triangles</a><br>
+        <a href="squares.html">squares</a><br>
+        <a href="molnarator.html">molnarator</a>
     </div>
     <div id="content">
     </div>
+    <div id="values"></div>
 </body>
-<script src="code.js"></script>
+<script src="battlemap.js"></script>
 </html>
