@@ -153,11 +153,11 @@ draw();
 
 function changeRandomness(dir){
     if (dir == 1) {
-        rF += 0.2;
+        rF += 0.4;
         console.log("rF = "+rF)
         document.cookie = "cookie_rF=" + rF + "; SameSite=Lax";
     } else {
-        rF<0?rf=0:rF -= 0.2;
+        rF<0?rf=0:rF -= 0.4;
         document.cookie = "cookie_rF=" + rF + "; SameSite=Lax";
 
     }
