@@ -1,3 +1,21 @@
+//COOKIE GETTER
+function getCookie(cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for(let i = 0; i <ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
+
+ 
 let twrk = {};
 
 // COORDINATES
@@ -71,49 +89,81 @@ stageParent.appendChild(dom.stage);
 twrk.makeSvgLayer({parent: dom.stage, id: "svgLayer", x: 0, y: 0});
 
 
+// Check of there is a cookie
+// Make one if there is none.
+if (!getCookie("cookie_rF")) {
+    document.cookie = "cookie_rF=" + 0.5 + "; SameSite=Lax"
+}
+
+
 // PAINTING VARIABLES
 let dist = 20;
 let cells = 7; //NEEDS TO BE UNEVEN
 let gap = 3;
 let values = [4,6,8,10,12,14];
-let path = [];
-let rF = 0.3;
-let rFplus = 0.05;
+let rF;
+let rFplus = 0;
+let yTranslate = 30;
 //MAKE PATH
 
-for (let col = 0; col < cells; col++) {
-    for (let row = 0; row < cells; row++) {
-        var division = values[Math.floor(Math.random()*values.length)];
-        if ((row + col%2)%2 == 0) {//S
-            for (let i = 0; i < (2*division + 2); i++){
-                let x = (Math.floor((i + 1)/2) + col%2)%2*-dist;
-                let y = (dist/division)*Math.floor(i/2)*(((col + 1)%2)*2 - 1);
-                x += ((col%2)*2 - 1)*row*(dist + gap);
-                y += col*(dist + gap) + (col%2)*dist - (cells+1)*dist/2;
-                x = col%2==0? (x + (cells*(dist+gap)/2)): (x - ((cells-2)*(dist+gap)/2));
-                path.push({x: x + Math.random()*rF, y: y + Math.random()*rF})
+function draw(){
+    rF = parseFloat(getCookie("cookie_rF"))
+    let path  = [];
+    for (let col = 0; col < cells; col++) {
+        for (let row = 0; row < cells; row++) {
+            var division = values[Math.floor(Math.random()*values.length)];
+            if ((row + col%2)%2 == 0) {//S
+                for (let i = 0; i < (2*division + 2); i++){
+                    let x = (Math.floor((i + 1)/2) + col%2)%2*-dist;
+                    let y = (dist/division)*Math.floor(i/2)*(((col + 1)%2)*2 - 1);
+                    x += ((col%2)*2 - 1)*row*(dist + gap);
+                    y += col*(dist + gap) + (col%2)*dist - (cells+1)*dist/2;
+                    x = col%2==0? (x + (cells*(dist+gap)/2)): (x - ((cells-2)*(dist+gap)/2));
+                    path.push({x: x + Math.random()*rF, y: y + Math.random()*rF-yTranslate})
+                }
+            } else { //W
+                for (let i = 0; i < (2*division + 2); i++) {
+                    let y = (Math.floor((i + 1)/2)+col%2)%2*-dist;
+                    let x = -(dist/division)*Math.floor(i/2)*(((col + 1)%2)*2 - 1);
+                    x += ((col%2)*2 - 1)*row*(dist + gap) - (col%2)*dist;
+                    y += col*(dist + gap) + dist - (cells+1)*dist/2;
+                    x = col%2==0? (x + (cells*(dist+gap)/2)): (x - ((cells-2)*(dist+gap)/2));
+                    path.push({x: x + Math.random()*rF, y: y + Math.random()*rF-yTranslate})
+                } 
             }
-        } else { //W
-            for (let i = 0; i < (2*division + 2); i++) {
-                let y = (Math.floor((i + 1)/2)+col%2)%2*-dist;
-                let x = -(dist/division)*Math.floor(i/2)*(((col + 1)%2)*2 - 1);
-                x += ((col%2)*2 - 1)*row*(dist + gap) - (col%2)*dist;
-                y += col*(dist + gap) + dist - (cells+1)*dist/2;
-                x = col%2==0? (x + (cells*(dist+gap)/2)): (x - ((cells-2)*(dist+gap)/2));
-                path.push({x: x + Math.random()*rF, y: y + Math.random()*rF})
-            } 
+            rF += rFplus;
         }
-        rF += rFplus;
     }
+    
+    //PAINT IT 
+    
+
+    twrk.makeSvgLine( {
+        id: "drawing",
+        parent: dom.svgLayer,
+        color: "#000",
+        stroke:0.5,
+        d: twrk.svgPath(path)
+    } );
 }
 
-//PAINT IT 
+draw();
 
-console.log(path)
-console.log(division)
-twrk.makeSvgLine( {
-    parent: dom.svgLayer,
-    color: "#000",
-    stroke:0.5,
-    d: twrk.svgPath(path)
-} );
+//CONTROL
+
+function changeRandomness(dir){
+    if (dir == 1) {
+        rF += 0.2;
+        console.log("rF = "+rF)
+        document.cookie = "cookie_rF=" + rF + "; SameSite=Lax";
+    } else {
+        rF<0?rf=0:rF -= 0.2;
+        document.cookie = "cookie_rF=" + rF + "; SameSite=Lax";
+
+    }
+    document.getElementById("drawing").remove();
+    draw()
+    console.log(document.cookie)
+}
+
+

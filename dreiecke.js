@@ -1,3 +1,20 @@
+//COOKIE GETTER
+function getCookie(cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for(let i = 0; i <ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
+
 let twrk = {};
 
 // COORDINATES
@@ -51,6 +68,7 @@ twrk.makeSvgLine = function ({parent, id, d="", color = "#f0f", stroke = 1, cap 
 twrk.makeSvgShape = function ({ parent, id, d = "", color = "#0ff" }) {
     dom[id] = document.createElementNS(twrk.svgNameSpace, "path");
     dom[id].setAttributeNS(null, "fill", color);
+    dom[id].style = "mix-blend-mode: multiply";
     dom[id].setAttributeNS(null, "d", d);
     dom[id].id = id;
     parent.appendChild(dom[id]);
@@ -71,13 +89,34 @@ stageParent.appendChild(dom.stage);
 twrk.makeSvgLayer({parent: dom.stage, id: "svgLayer", x: 0, y: 0});
 
 
+
+// Check of there is a cookie
+// Make one if there is none.
+if (!getCookie("cookie_colors")) {
+    document.cookie = "cookie_colors=" + 1 + "; SameSite=Lax"
+}
+
 //draw
 let dist = 10;
 let square = 20;
 let cells = 10;
-let colors = ["#cdb4db", "#ffc8dd", "#ffafcc", "#bde0fe", "#a2d2ff"];
+let colors1 = ["#cdb4db", "#ffc8dd", "#ffafcc", "#bde0fe", "#a2d2ff"];
+let colors2 = ["#d3f8e2", "#e4c1f9", "#f694c1", "#ede7b1", "#a9def9"];
+let colors3 = ["#f7d1cd", "#e8c2ca", "#d1b3c4", "#b392ac", "#735d78"];
+let colors = [];
+
 let c3 = [-square/2,0,square/2];
 let c2 = [0,square/2];
+
+
+//set color by cookie
+if ( parseFloat(getCookie("cookie_colors")) == 1){
+    colors = colors1;
+} else if ( parseFloat(getCookie("cookie_colors")) == 2){
+    colors = colors2;
+} else {
+    colors = colors3;
+}
 
 for (let x = -cells/2; x < cells/2; x++){
     for (let y = -cells/2; y < cells/2; y++){
@@ -96,28 +135,19 @@ for (let x = -cells/2; x < cells/2; x++){
     }
 }
 
-/*
-// Frame
-let aD = Math.random()/4;
+function changeColors(n){
+    let myPaths = document.querySelectorAll("path");
+    for (let p of myPaths){
+        if (n == 1){
+            p.setAttributeNS(null, "fill", colors1[Math.floor(Math.random()*colors1.length)]);
+            document.cookie = "cookie_colors=" + 1 + "; SameSite=Lax";
+        } else if (n == 2){
+            p.setAttributeNS(null, "fill", colors2[Math.floor(Math.random()*colors2.length)]);
+            document.cookie = "cookie_colors=" + 2 + "; SameSite=Lax";
+        } else {
+            p.setAttributeNS(null, "fill", colors3[Math.floor(Math.random()*colors3.length)]);
+            document.cookie = "cookie_colors=" + 3 + "; SameSite=Lax";
 
-let frame = [
-    {x: -(cells/2 + 1 + aD)*dist, y:  -(cells/2 + 1)*dist},
-    {x: -(cells/2 + 1)*dist, y:  (cells/2)*dist},
-    {x: (cells/2)*dist, y:  (cells/2 + aD)*dist},
-    {x: (cells/2 + aD)*dist, y:  -(cells/2 + 1 + aD)*dist},
-    {x: -(cells/2 + 1 + aD)*dist, y:  -(cells/2 + 1)*dist}
-]
-
-twrk.makeSvgLine( {
-    parent: dom.svgLayer,
-    stroke: 3,
-    cap: "square",
-    color: "#333",
-    d: twrk.svgPath(frame)
-});
-
-  {x: x*dist + thisTopX,  y: y*dist - square/2},
-            {x: x*dist + square/2,  y: y*dist + square/2},
-            {x: x*dist - square/2,  y: y*dist + square/2}
-
-*/
+        }
+    }
+}

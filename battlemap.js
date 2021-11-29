@@ -64,52 +64,67 @@ let dom = {};
 dom.stage = document.createElement("stage");
 dom.stage.style.transform = "translateX(" + (twrk.center.x * twrk.res) + "px) translateY(" + (twrk.center.y * twrk.res +"px)");
 dom.stage.id = "stage";
-document.body.appendChild(dom.stage);
+let stageParent = document.querySelector("#content");
+stageParent.appendChild(dom.stage);
 
 // make svg laver
-twrk.makeSvgLayer({parent: dom.stage, id: "svgLayer", x: 0, y: 0});
 
 
-//GRID BAISC PARAMETERS
-let dist = 5;
-let square = 5;
-let cells = 60;
-
-// GRID VALUES, FUNNY TO PLAY 
-// to see original idea _rF = 0.5, gI = 0, gS = 1, mF = 0
-let _rF = Math.random() // 0 to 1, randomness (0.5)
-let gridImpact = Math.random(); // 0 to 1, diamond shaped grid variation (0)
-let _gridStyle = Math.random()<0.5?1:-1; // 1, 0 or -1, defines horizontal or vertical (1)
-let mashupFactor = Math.floor(Math.random()*10) //(0)
 
 //DRAW GRID
-for (let x = -cells/2; x < cells/2; x++){
-    for (let y = -cells/2; y < cells/2; y++){
-        let rF = _rF;
-        let gridStyle = _gridStyle;
-        rF += gridImpact*(Math.abs(x)+Math.abs(y))/(1.2*cells)
-        gridStyle += gridImpact*(Math.abs(x)+Math.abs(y))/(1.2*cells)*mashupFactor
-        let path = [
-            {
-            x: x*dist + (Math.random()<rF?(-square/2):square/2),
-            y: y*dist + (Math.random()<rF?(square/2):-square/2)
-            },{
-            x: x*dist + (Math.random()<1-rF?(gridStyle*square/2):-gridStyle*square/2), 
-            y: y*dist + (Math.random()<1-rF?(gridStyle*square/2):-gridStyle*square/2)
-            },
-        ]
-        if (Math.random()){
-            twrk.makeSvgLine( {
-                parent: dom.svgLayer,
-                stroke: 0.5,
-                color: "#000",
-                d: twrk.svgPath(path)
-            } );
+function draw(){
+    twrk.makeSvgLayer({parent: dom.stage, id: "svgLayer", x: 0, y: 0});
+
+    let path = [];
+    //GRID BAISC PARAMETERS
+    let dist = 5;
+    let square = 5;
+    let cells = 60;
+
+    // GRID VALUES, FUNNY TO PLAY 
+    // to see original idea _rF = 0.5, gI = 0, gS = 1, mF = 0
+    let _rF = Math.random() // 0 to 1, randomness (0.5)
+    let gridImpact = Math.random(); // 0 to 1, diamond shaped grid variation (0)
+    let _gridStyle = Math.random()<0.5?1:-1; // 1, 0 or -1, defines horizontal or vertical (1)
+    let mashupFactor = Math.floor(Math.random()*10) //(0)
+
+
+   
+    for (let x = -cells/2; x < cells/2; x++){
+        for (let y = -cells/2; y < cells/2; y++){
+            let rF = _rF;
+            let gridStyle = _gridStyle;
+            rF += gridImpact*(Math.abs(x)+Math.abs(y))/(1.2*cells)
+            gridStyle += gridImpact*(Math.abs(x)+Math.abs(y))/(1.2*cells)*mashupFactor
+            path = [
+                {
+                x: x*dist + (Math.random()<rF?(-square/2):square/2),
+                y: y*dist + (Math.random()<rF?(square/2):-square/2)
+                },{
+                x: x*dist + (Math.random()<1-rF?(gridStyle*square/2):-gridStyle*square/2), 
+                y: y*dist + (Math.random()<1-rF?(gridStyle*square/2):-gridStyle*square/2)
+                },
+            ]
+            if (Math.random()){
+                twrk.makeSvgLine( {
+                    parent: dom.svgLayer,
+                    id: "drawing",
+                    stroke: 0.5,
+                    color: "#000",
+                    d: twrk.svgPath(path)
+                } );
+            }
+            rF = _rF;
+            
         }
-        rF = _rF;
-        
     }
+    document.getElementById("values").innerHTML = "values: rF = " + _rF.toFixed(2) + ", grid Impact = " + gridImpact.toFixed(2) + ", grid Style = " + _gridStyle + ", Mashup Factor = " + mashupFactor
+}
+draw();
+
+function reDraw(){
+    document.getElementById("svgLayer").remove();
+    draw();
 }
 
 //Text
-document.getElementById("values").innerHTML = "values: rF = " + _rF.toFixed(2) + ", grid Impact = " + gridImpact.toFixed(2) + ", grid Style = " + _gridStyle + ", Mashup Factor = " + mashupFactor
