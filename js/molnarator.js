@@ -141,7 +141,7 @@ function draw(){
     twrk.makeSvgLine( {
         id: "drawing",
         parent: dom.svgLayer,
-        color: "#000",
+        color: "#735d78",
         stroke:0.5,
         d: twrk.svgPath(path)
     } );

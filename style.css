@@ -29,6 +29,14 @@ control {
     font-family: monospace;
 }
 
+.header_white{
+    font-size:12px;
+    color: #fff;
+    position: absolute;
+    padding: 10px;
+    font-family: monospace;
+}
+
 #values {
     position: fixed;
     color: #666;
@@ -41,5 +49,9 @@ control {
 a:link, a:visited, a:hover, a:active {
     color: #000;
     text-decoration: none;
+}
+
+.header_white a:link, .header_white a:visited, .header_white a:hover, .header_white a:active  {
+    color: #fff;
 }
 

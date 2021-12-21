@@ -110,7 +110,7 @@ function draw(){
                     parent: dom.svgLayer,
                     id: "drawing",
                     stroke: 0.5,
-                    color: "#000",
+                    color: "#59758f",
                     d: twrk.svgPath(path)
                 } );
             }
