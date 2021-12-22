@@ -30,7 +30,7 @@ twrk.scale = function ({ width, height }) {
         twrk.res = window.innerHeight / twrk.height;
         twrk.width = window.innerWidth / twrk.res;
     }
-    twrk.center = {x: twrk.width / 2, y: twrk.height / 2};  
+    twrk.center = {x: twrk.width / 2, y: twrk.height / 1.6};  
 }
 window.innerWidth < window.innerHeight ? twrk.scale({ width: 200 }): twrk.scale({ height: 200 });
 
