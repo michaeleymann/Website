@@ -46,6 +46,7 @@ function myAttractor(iters){
 }
 
 function setup(){
+  pixelDensity( 1 );
   createCanvas(windowWidth,windowHeight);
   background(0);
   //slider = createSlider(-3,3,1.56,0);
