@@ -47,7 +47,9 @@ function myAttractor(iters){
 
 function setup(){
   pixelDensity( 1 );
-  createCanvas(windowWidth,windowHeight);
+  let cnvs = createCanvas(windowWidth,windowHeight);
+  cnvs.parent("content")
+
   background(0);
   //slider = createSlider(-3,3,1.56,0);
   //slider.position(10,10);

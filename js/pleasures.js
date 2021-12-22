@@ -66,7 +66,8 @@ let dom = {};
 dom.stage = document.createElement("stage");
 dom.stage.style.transform = "translateX(" + (twrk.center.x * twrk.res) + "px) translateY(" + (twrk.center.y * twrk.res +"px)");
 dom.stage.id = "stage";
-document.body.appendChild(dom.stage);
+let stageParent = document.querySelector("#content");
+stageParent.appendChild(dom.stage);
 
 // make svg laver
 twrk.makeSvgLayer({parent: dom.stage, id: "svgLayer", x: 0, y: 0});

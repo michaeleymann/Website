@@ -29,7 +29,8 @@ function preload() {
 //  ---------- P5 SETUP -----------
 function setup() {
   pixelDensity( 1 );
-  createCanvas( windowWidth, windowHeight, WEBGL );
+  let cnvs = createCanvas( windowWidth, windowHeight, WEBGL );
+  cnvs.parent("content")
   shaderTexture = createGraphics( width, height, WEBGL );
   shaderTexture.noStroke();
   noCursor();
