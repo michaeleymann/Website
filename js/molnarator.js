@@ -32,7 +32,7 @@ twrk.scale = function ({ width, height }) {
     }
     twrk.center = {x: twrk.width / 2, y: twrk.height / 2};  
 }
-window.innerWidth < window.innerHeight ? twrk.scale({ width: 180 }): twrk.scale({ height: 180 });
+window.innerWidth < window.innerHeight ? twrk.scale({ width: 200 }): twrk.scale({ height: 200 });
 
 // SVG
 
